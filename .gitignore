@@ -1,6 +1,9 @@
 # ===== Données =====
 *.csv
 
+# ===== Modèles =====
+*.joblib
+
 # ===== Python =====
 __pycache__/
 *.py[cod]
