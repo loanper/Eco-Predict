@@ -1,0 +1,26 @@
+# ===== Données =====
+*.csv
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== Environnement =====
+.env
+.venv/
+venv/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== IDE =====
+.vscode/
+.idea/
