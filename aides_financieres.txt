@@ -1,0 +1,56 @@
+=== AIDES FINANCIÈRES À LA RÉNOVATION ÉNERGÉTIQUE — FRANCE 2026 ===
+
+1. MaPrimeRénov' (ANAH)
+   - Propriétaires occupants et bailleurs
+   - Montants selon revenus (très modestes, modestes, intermédiaires, supérieurs) :
+     • Isolation des murs par l'extérieur (ITE) : 40 à 75 €/m²
+     • Isolation des murs par l'intérieur (ITI) : 15 à 25 €/m²
+     • Isolation des combles/toiture : 15 à 25 €/m²
+     • Pompe à chaleur air/eau : 3 000 à 5 000 €
+     • Chauffe-eau thermodynamique : 800 à 1 200 €
+     • VMC double flux : 2 500 à 3 000 €
+     • Fenêtres double/triple vitrage : 40 à 100 €/fenêtre
+   - Plafond global : 30 000 à 70 000 € selon le nombre de gestes
+   - Bonus « sortie de passoire » (F ou G → D ou mieux) : +1 500 €
+   - Obligation d'un audit énergétique pour les rénovations globales
+
+2. MaPrimeRénov' Parcours accompagné (rénovation globale)
+   - Pour une rénovation d'ampleur (2 gestes minimum)
+   - Gain énergétique minimum exigé : 35%
+   - Prise en charge jusqu'à 63 000 € (très modestes) pour un gain ≥ 55%
+   - Accompagnement obligatoire par un Mon Accompagnateur Rénov'
+
+3. Certificats d'Économie d'Énergie (CEE / Prime Énergie)
+   - Versées par les fournisseurs d'énergie
+   - Cumulables avec MaPrimeRénov'
+   - Montants variables selon l'opération et la zone climatique :
+     • Zone H1 (froid) : primes majorées (+15 à 25%)
+     • Zone H3 (méditerranéen) : primes réduites
+   - Exemples moyens :
+     • Isolation combles : 8 à 12 €/m²
+     • Pompe à chaleur : 2 500 à 4 000 €
+     • Chaudière biomasse : 2 000 à 4 000 €
+
+4. Éco-prêt à taux zéro (éco-PTZ)
+   - Prêt sans intérêts pour financer les travaux
+   - Montant max : 50 000 € (bouquet de 3 travaux ou plus)
+   - Durée : jusqu'à 20 ans
+   - Cumulable avec toutes les autres aides
+   - Sans conditions de ressources
+
+5. TVA réduite à 5,5%
+   - Applicable automatiquement pour les travaux d'amélioration énergétique
+   - Logement de plus de 2 ans
+   - Économie significative sur le coût total des travaux
+
+6. Aides locales et régionales
+   - Certaines collectivités proposent des aides complémentaires
+   - Consulter l'ANIL (anil.org) ou France Rénov' pour le détail par département
+   - Exemples : Île-de-France, métropoles de Lyon, Bordeaux, etc.
+
+7. Conditions communes
+   - Travaux réalisés par un artisan RGE (Reconnu Garant de l'Environnement)
+   - Logement achevé depuis plus de 15 ans (MaPrimeRénov') ou 2 ans (CEE, éco-PTZ)
+   - Cumul MaPrimeRénov' + CEE + éco-PTZ autorisé (plafond de 90% du coût TTC pour les ménages très modestes)
+
+=== FIN DES AIDES ===

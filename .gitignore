@@ -1,6 +1,9 @@
 # ===== Données =====
 *.csv
 
+# ===== Modèles =====
+*.joblib
+
 # ===== Python =====
 __pycache__/
 *.py[cod]
@@ -24,3 +27,14 @@ desktop.ini
 # ===== IDE =====
 .vscode/
 .idea/
+
+# ===== Node.js =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ===== Build =====
+dist/
+build/
