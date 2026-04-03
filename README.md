@@ -1,73 +1,143 @@
-# 🏠 EcoPredict — Prédiction Énergétique des Logements
+# EcoPredict v3
 
-**EcoPredict** est un modèle de Machine Learning qui prédit la **consommation énergétique**, les **émissions de CO₂** et le **coût annuel estimé** d'un logement à partir de ses caractéristiques techniques (DPE), en intégrant les **zones climatiques françaises**.
+Application full-stack de diagnostic energetique:
+- prediction de consommation (kWh/m2/an)
+- prediction d'emissions CO2 (kg/m2/an)
+- estimation du cout annuel
+- recommandations de travaux avec ROI
+- chat IA (Gemma) contextuel au logement
 
-## 📊 Modèle v3 — Multi-Départemental
+## Architecture
 
-- **8 départements** : 13, 33, 44, 59, 63, 67, 74, 75 (~3.5M lignes)
-- **3 zones climatiques** : H1 (Froid), H2 (Tempéré), H3 (Méditerranéen)
-- **Évaluation géographique** : métriques R²/MAE par zone et par département
+Le projet est compose de trois couches:
 
-## 🛠️ Stack technique
+1. Modele/Notebook
+- `eda.ipynb`: exploration initiale mono-departement
+- `model_multi_dep.ipynb`: entrainement multi-departements (v3)
+- sortie attendue: `ecopredict_v3_pipeline.joblib`
 
-- **Modèle** : XGBoost (MultiOutput) optimisé par Optuna (GPU CUDA)
-- **Features** : 49 variables (19 numériques brutes + 7 engineered + 23 catégorielles dont zone_climatique + code_departement)
-- **Nettoyage** : IQR outlier removal + filtres de cohérence thermique
-- **Coût** : Tarifs énergie réels 2025 (élec: 0.2516 €/kWh, gaz: 0.1284, fioul: 0.119, bois: 0.07)
-- **Export** : Pipeline complet en `.joblib` pour backend FastAPI
+2. Backend API (FastAPI)
+- `main.py`: routes API (`/health`, `/predict`, `/chat`)
+- `engine.py`: logique metier (features, prediction, simulation travaux, contexte LLM)
+- `aides_financieres.txt`: base de contexte pour les aides
 
-## 📁 Structure
+3. Frontend (React + Vite + Tailwind)
+- dossier `frontend/`
+- formulaire multi-etapes, dashboard, recommandations, widget chat
+- proxy Vite `"/api" -> "http://127.0.0.1:8000"`
 
+## Arborescence utile
+
+```text
+.
+├── main.py
+├── engine.py
+├── requirements.txt
+├── aides_financieres.txt
+├── model_multi_dep.ipynb
+├── eda.ipynb
+├── ecopredict_v3_pipeline.joblib
+├── dpe_logement_13.csv ... dpe_logement_75.csv
+└── frontend/
+    ├── package.json
+    ├── vite.config.js
+    ├── src/
+    │   ├── main.jsx
+    │   ├── App.jsx
+    │   ├── api.js
+    │   ├── constants.js
+    │   └── components/
 ```
-├── eda.ipynb                      # EDA mono-département (v2)
-├── model_multi_dep.ipynb          # Modélisation multi-départementale (v3)
-├── ecopredict_v3_pipeline.joblib  # Pipeline exporté (non versionné)
-├── dpe_logement_XX.csv            # Datasets DPE par département (non versionnés)
-├── .gitignore
-└── README.md
+
+## Prerequis
+
+- Python 3.11+ (ou environnement conda)
+- Node.js + npm
+- Cle API Gemini dans `.env`
+
+Exemple `.env`:
+
+```env
+GEMINI_API_KEY=xxxxxxxxxxxxxxxx
 ```
 
-## 🚀 Utilisation
+## Installation
 
-### Prérequis
+### 1) Backend
 
 ```bash
-pip install xgboost scikit-learn pandas matplotlib seaborn optuna joblib
+python -m pip install -r requirements.txt
 ```
 
-> **GPU** : nécessite CUDA pour l'entraînement (~3-5 min sur RTX 3060 Ti).
+### 2) Frontend
 
-### Exécuter
-
-1. Placer les fichiers `dpe_logement_XX.csv` à la racine (source : [data.ademe.fr](https://data.ademe.fr/datasets/dpe-v2-logements-existants))
-2. Ouvrir `model_multi_dep.ipynb` et exécuter toutes les cellules
-3. Utiliser `predict_energy()` avec le paramètre `zone_climatique`
-
-### Exemple
-
-```python
-result = predict_energy(
-    65, 1965,
-    zone_climatique="H1", code_departement="59",
-    type_batiment="appartement",
-    type_energie_chauffage="gaz",
-    type_isolation_mur="non isole",
-)
-# → Consommation : ~168 kWh/m²/an | Classe D | Zone H1
+```bash
+cd frontend
+npm install
 ```
 
-### Charger le modèle exporté (FastAPI)
+## Lancement en local
 
-```python
-import joblib
-pipeline = joblib.load("ecopredict_v3_pipeline.joblib")
-predictions = pipeline.predict(df_input)
+Ouvrir deux terminaux.
+
+### Terminal A (backend, a la racine du projet)
+
+```bash
+uvicorn main:app --reload
 ```
 
-## 📋 Dataset
+API disponible sur `http://127.0.0.1:8000`
 
-Le modèle s'appuie sur le **DPE (Diagnostic de Performance Énergétique)** des logements existants, disponible en open data sur l'ADEME. Les fichiers CSV (~3.5M lignes au total) ne sont pas inclus dans le repo.
+### Terminal B (frontend)
 
-## 👤 Auteur
+```bash
+cd frontend
+npm run dev
+```
 
-**Loan Perrache** — Projet PPE ING4 (ECE Paris)
+App disponible sur `http://localhost:5173`
+
+## Build frontend
+
+```bash
+cd frontend
+npm run build
+npm run preview
+```
+
+## Endpoints API
+
+- `GET /health` -> statut service
+- `POST /predict` -> diagnostic + recommandations
+- `POST /chat` -> reponse IA contextualisee
+
+## Regeneration du modele (objectif a terme)
+
+Etat actuel:
+- l'application utilise prioritairement le fichier `ecopredict_v3_pipeline.joblib` existant
+- la regeneration du modele via notebook n'est pas obligatoire pour lancer l'app
+
+Pour regenerer plus tard:
+1. placer les CSV DPE a la racine
+2. ouvrir `model_multi_dep.ipynb`
+3. executer les cellules d'entrainement/export
+4. verifier la mise a jour de `ecopredict_v3_pipeline.joblib`
+
+## Notes importantes
+
+- Le chat IA est une fonctionnalite obligatoire du projet.
+- Sans `GEMINI_API_KEY`, `/chat` renvoie une erreur 503.
+- Le backend charge le `.joblib` au demarrage; si le fichier manque, l'API ne demarre pas.
+- Le notebook `model_multi_dep.ipynb` contenait des marqueurs de conflit Git et a ete nettoye.
+
+## Depannage rapide
+
+Si `npm` n'est pas reconnu:
+- verifier que Node/npm est installe et accessible dans le terminal courant
+
+Si `uvicorn main:app --reload` echoue avec `Could not import module "main"`:
+- verifier que la commande est lancee depuis la racine du projet (pas depuis `frontend/`)
+
+## Auteur
+
+Projet PPE ING4 - ECE Paris
