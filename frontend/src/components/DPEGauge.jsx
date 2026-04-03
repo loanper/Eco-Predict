@@ -23,21 +23,22 @@ const GES_SCALE = [
 function GaugeBar({ scale, value, currentClasse, label, unit }) {
   return (
     <div>
-      <p className="text-xs font-medium text-gray-500 mb-2 uppercase tracking-wide">{label}</p>
-      <div className="space-y-1">
+      <p className="text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wide">{label}</p>
+      <div className="space-y-1.5">
         {scale.map((row, i) => {
           const isActive = row.classe === currentClasse;
-          const widthPct = 40 + i * 10;
+          const widthPct = 48 + i * 7;
           return (
             <div key={row.classe} className="flex items-center gap-2">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${widthPct}%` }}
                 transition={{ duration: 0.6, delay: i * 0.05 }}
-                className="h-7 rounded-r-md flex items-center justify-between px-2 relative"
+                className="h-8 rounded-r-xl flex items-center justify-between px-2.5 relative"
                 style={{
                   backgroundColor: row.color,
-                  opacity: isActive ? 1 : 0.35,
+                  opacity: isActive ? 1 : 0.32,
+                  boxShadow: isActive ? "0 6px 14px rgba(15, 23, 42, 0.12)" : "none",
                 }}
               >
                 <span className="text-xs font-bold" style={{ color: row.textColor }}>
@@ -53,8 +54,8 @@ function GaugeBar({ scale, value, currentClasse, label, unit }) {
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex items-center gap-1"
                 >
-                  <span className="text-xs font-bold text-gray-700">◄</span>
-                  <span className="text-sm font-bold text-gray-800">{value} {unit}</span>
+                  <span className="text-xs font-bold text-slate-600">◄</span>
+                  <span className="text-sm font-bold text-slate-900">{value} {unit}</span>
                 </motion.div>
               )}
             </div>
@@ -69,7 +70,7 @@ export default function DPEGauge({ diagnostic }) {
   if (!diagnostic) return null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
       <GaugeBar
         scale={DPE_SCALE}
         value={diagnostic.consommation_kwh_m2_an}

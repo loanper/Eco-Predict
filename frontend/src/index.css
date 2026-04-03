@@ -4,8 +4,50 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #f7faf9;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border-soft: #e6efe9;
+  --emerald-ink: #065f46;
+  --emerald-strong: #047857;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #86efac;
+  color: #064e3b;
+}
+
+.premium-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(2, 12, 27, 0.05);
+}
+
+.section-title {
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.kpi-value {
+  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.1;
 }

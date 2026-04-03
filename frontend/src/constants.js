@@ -7,6 +7,16 @@ export const STEPS = [
   { id: "details",   label: "Détails",   icon: "Settings" },
 ];
 
+export const ENERGY_TARIFF_SUGGESTIONS = {
+  electricite: 0.2516,
+  gaz: 0.1284,
+  fioul: 0.119,
+  bois: 0.07,
+  charbon: 0.09,
+  gpl: 0.155,
+  reseau: 0.105,
+};
+
 export const DEFAULT_HOME = {
   // Step 1 — Général
   surface_habitable_logement: 85,
@@ -44,6 +54,7 @@ export const DEFAULT_HOME = {
 
   // Step 3 — Systèmes
   type_energie_chauffage: "gaz",
+  tarif_energie_eur_kwh: 0.1284,
   type_installation_chauffage: "collectif",
   type_generateur_chauffage: "chaudiere classique gaz",
   type_energie_ecs: "gaz",
@@ -89,6 +100,7 @@ export const STEP_FIELDS = {
   ],
   systemes: [
     { key: "type_energie_chauffage",       label: "Énergie de chauffage",      type: "select", options: ["gaz","electricite","fioul","bois","gpl","reseau","charbon"] },
+    { key: "tarif_energie_eur_kwh",        label: "Tarif énergie (€/kWh)",      type: "number", min: 0.01, max: 5, step: 0.0001 },
     { key: "type_installation_chauffage",  label: "Installation chauffage",    type: "select", options: ["individuel","collectif"] },
     { key: "type_generateur_chauffage",    label: "Générateur chauffage",      type: "select", options: ["chaudiere classique gaz","chaudiere condensation gaz","chaudiere classique fioul","pac air/eau","pac air/air","radiateur electrique","poele bois","inconnu"] },
     { key: "type_energie_ecs",             label: "Énergie ECS",               type: "select", options: ["gaz","electricite","fioul","bois","inconnu"] },

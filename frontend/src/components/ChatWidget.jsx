@@ -8,7 +8,7 @@ export default function ChatWidget({ formData }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Bonjour ! Je suis votre conseiller en rénovation énergétique. Posez-moi vos questions sur votre diagnostic ou les travaux recommandés.",
+      text: "Bonjour ! Je suis votre conseiller rénovation. Je réponds de façon courte et concrète sur votre facture et vos travaux rentables.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -19,6 +19,16 @@ export default function ChatWidget({ formData }) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const sanitizeAssistantText = (text) => {
+    if (!text) return "";
+    return String(text)
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/^\s*\*\s+/gm, "- ")
+      .replace(/^\s*#{1,6}\s*/gm, "")
+      .replace(/`{1,3}/g, "")
+      .trim();
+  };
+
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
@@ -27,7 +37,7 @@ export default function ChatWidget({ formData }) {
     setLoading(true);
     try {
       const data = await postChat(formData, text);
-      setMessages((m) => [...m, { role: "assistant", text: data.response }]);
+      setMessages((m) => [...m, { role: "assistant", text: sanitizeAssistantText(data.response) }]);
     } catch (err) {
       setMessages((m) => [
         ...m,

@@ -111,6 +111,13 @@ npm run preview
 - `POST /predict` -> diagnostic + recommandations
 - `POST /chat` -> reponse IA contextualisee
 
+## Tarifs energie: comportement
+
+- La prediction ML (`conso`, `co2`) ne depend pas du prix de l'energie.
+- Le prix n'est utilise que pour convertir la conso en `cout_annuel_euros`.
+- Tu peux fournir `tarif_energie_eur_kwh` dans l'input API/frontend pour personnaliser le cout.
+- Si ce champ est absent, un tarif par defaut est applique selon `type_energie_chauffage`.
+
 ## Regeneration du modele (objectif a terme)
 
 Etat actuel:

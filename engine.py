@@ -69,7 +69,14 @@ TARIFS_ENERGIE = {
 TARIF_DEFAULT = 0.15
 
 
-def get_tarif(e: str) -> float:
+def get_tarif(e: str, tarif_personnalise: float | None = None) -> float:
+    if tarif_personnalise is not None:
+        try:
+            t = float(tarif_personnalise)
+            if t > 0:
+                return t
+        except (TypeError, ValueError):
+            pass
     if not e or str(e).lower() in ("nan", "inconnu", ""):
         return TARIF_DEFAULT
     e_low = str(e).lower().strip()
@@ -265,7 +272,7 @@ def predict_cost(params: dict) -> tuple[float, float, float]:
     co2 = float(pred[1])
     surface = params.get("surface_habitable_logement", 80)
     energie = params.get("type_energie_chauffage", "inconnu")
-    tarif = get_tarif(energie)
+    tarif = get_tarif(energie, params.get("tarif_energie_eur_kwh"))
     coef = coef_ep_ef(energie)
     cout = conso * coef * surface * tarif
     return round(conso, 1), round(co2, 1), round(cout, 2)

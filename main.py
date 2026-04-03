@@ -89,6 +89,12 @@ class HomeData(BaseModel):
     type_materiaux_menuiserie: str = Field("inconnu")
     type_gaz_lame: str = Field("inconnu")
     type_ventilation: str = Field("inconnu")
+    tarif_energie_eur_kwh: Optional[float] = Field(
+        None,
+        gt=0,
+        le=5,
+        description="Tarif personnalisé de l'énergie (€/kWh). Si absent, un tarif par défaut est appliqué selon l'énergie.",
+    )
     periode_construction_dpe: str = Field("inconnu")
     chauffage_solaire: str = Field("0")
     ecs_solaire: str = Field("0")
@@ -148,17 +154,44 @@ async def chat(req: ChatRequest):
 
     params = req.home.model_dump()
     recommendations = get_improvement_recommendations(params)
-    context = build_llm_context(params, recommendations, top_n=3)
+
+    q = req.message.lower().strip()
+    focused_keywords = (
+        "eco-ptz", "éco-ptz", "ptz", "maprimerenov", "ma prime renov", "cee", "tva",
+        "aide", "financement", "subvention", "definition", "définition", "c'est quoi", "c est quoi",
+    )
+    is_focused_question = any(k in q for k in focused_keywords)
+
+    if is_focused_question:
+        context = (
+            "=== CONTEXTE MINIMAL ===\n"
+            f"Type logement: {params.get('type_batiment_dpe', 'N/A')}\n"
+            f"Surface: {params.get('surface_habitable_logement', 'N/A')} m²\n"
+            f"Energie chauffage: {params.get('type_energie_chauffage', 'N/A')}\n"
+            "La question utilisateur est ciblée: répondre uniquement à cette question, sans refaire tout le diagnostic.\n"
+        )
+    else:
+        context = build_llm_context(params, recommendations, top_n=2)
 
     aides = load_aides_context()
     system_prompt = (
-        "Tu es un conseiller expert en rénovation énergétique pour des logements en France. "
-        "Tu réponds en français, de manière pédagogue et structurée. "
-        "Tu mentionnes les aides financières disponibles quand c'est pertinent. "
-        "Tu adaptes tes conseils à la zone climatique du logement.\n\n"
+        "Tu es un conseiller renovation energetique pour des particuliers en France. "
+        "Objectif prioritaire: expliquer simplement la facture annuelle et la rentabilite des travaux. "
+        "Reponds en francais clair, concret et court.\n\n"
+        "REGLE CLE: repond d'abord a la question precise de l'utilisateur.\n"
+        "Ne refais pas un recap complet du diagnostic sauf si l'utilisateur le demande explicitement.\n\n"
+        "FORMAT CONSEILLE:\n"
+        "- Si question generale: Resume express + 2 a 3 puces d'actions.\n"
+        "- Si question ciblee (ex: eco-PTZ): definition courte + conditions + 1 action pratique.\n\n"
+        "CONTRAINTES:\n"
+        "- Maximum 110 mots, sauf demande explicite de details.\n"
+        "- N'invente jamais de montant/aide non present dans le contexte.\n"
+        "- Si une info est incertaine, ecris 'A confirmer'.\n"
+        "- Pas de long paragraphe, prefere des puces courtes.\n\n"
+        "- N'utilise PAS de markdown: pas de **, pas de #, pas de listes avec *.\n"
     )
     if aides:
-        system_prompt += f"AIDES FINANCIÈRES 2026 :\n{aides}\n\n"
+        system_prompt += f"AIDES FINANCIERES 2026 (extrait):\n{aides[:2500]}\n\n"
     system_prompt += context
 
     try:
@@ -166,7 +199,14 @@ async def chat(req: ChatRequest):
         model = genai.GenerativeModel(model_name="gemma-3-27b-it")
         # Gemma ne supporte pas system_instruction : on l'injecte dans le prompt
         full_prompt = f"{system_prompt}\n\nQuestion de l'utilisateur : {req.message}"
-        response = model.generate_content(full_prompt)
+        response = model.generate_content(
+            full_prompt,
+            generation_config={
+                "temperature": 0.2,
+                "top_p": 0.9,
+                "max_output_tokens": 220,
+            },
+        )
         # response.text lève ValueError si la réponse est bloquée
         answer = response.candidates[0].content.parts[0].text
     except Exception as exc:
@@ -174,6 +214,5 @@ async def chat(req: ChatRequest):
 
     return {
         "response": answer,
-        "context_used": context,
         "model": "gemma-3-27b-it",
     }
