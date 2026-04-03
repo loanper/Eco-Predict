@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { Wrench, Euro, Clock, TrendingDown, Leaf, BadgeCheck } from "lucide-react";
 
 const RANK_STYLES = [
-  "ring-2 ring-amber-300 bg-gradient-to-b from-amber-50 to-white",
-  "ring-2 ring-slate-300 bg-gradient-to-b from-slate-50 to-white",
-  "ring-2 ring-orange-300 bg-gradient-to-b from-orange-50 to-white",
+  "ring-1 ring-brand-emerald-300/70 bg-white/70",
+  "ring-1 ring-brand-blue-200/70 bg-white/70",
+  "ring-1 ring-amber-300/70 bg-white/70",
 ];
 
 function roiBadgeClass(roi) {
@@ -22,15 +22,16 @@ export default function RecommandationCard({ rec, rank }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: rank * 0.1 }}
-      className={`rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-lg transition ${ringClass}`}
+      className={`relative overflow-hidden rounded-3xl border border-slate-200/60 p-5 shadow-soft hover:shadow-lift hover:-translate-y-0.5 transition ${ringClass}
+                  before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-brand-gradient`}
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-2">
           <span className="text-xl">{medals[rank] || "🔧"}</span>
-          <h4 className="font-semibold text-slate-800 text-sm leading-snug">{rec.nom}</h4>
+          <h4 className="font-extrabold text-slate-900 text-sm leading-snug tracking-tight">{rec.nom}</h4>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <span className="text-xs font-bold px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">
+          <span className="text-xs font-extrabold px-2 py-1 rounded-full bg-emerald-100 text-emerald-800">
             DPE {rec.nouvelle_classe_dpe}
           </span>
           <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${roiBadgeClass(rec.roi_annees)}`}>
@@ -61,24 +62,24 @@ export default function RecommandationCard({ rec, rank }) {
             <p className="font-semibold text-slate-800">{rec.roi_annees} ans</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-blue-700">
-          <Leaf size={14} className="text-blue-400" />
+        <div className="flex items-center gap-2 text-brand-blue-800">
+          <Leaf size={14} className="text-brand-blue-500" />
           <div>
             <p className="text-[10px] text-slate-400 uppercase tracking-wide">CO₂ évité</p>
-            <p className="font-semibold text-blue-700">−{rec.reduction_co2_kg_m2} kg/m²</p>
+            <p className="font-semibold text-brand-blue-800">−{rec.reduction_co2_kg_m2} kg/m²</p>
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl bg-slate-50 border border-slate-100 p-2.5 flex items-center gap-2">
-        <BadgeCheck size={14} className="text-emerald-600 shrink-0" />
-        <span className="text-xs text-slate-600">
-          Gain conso: <b className="text-emerald-700">−{rec.reduction_conso_kwh_m2} kWh/m²/an</b>
+      <div className="rounded-2xl bg-brand-gradient-soft border border-slate-200/60 p-3 flex items-center gap-2">
+        <BadgeCheck size={14} className="text-brand-emerald-700 shrink-0" />
+        <span className="text-xs text-slate-700">
+          Gain conso: <b className="text-brand-emerald-900">−{rec.reduction_conso_kwh_m2} kWh/m²/an</b>
         </span>
       </div>
 
       <div className="mt-2 pt-2 border-t border-slate-200/80 flex items-center gap-2">
-        <TrendingDown size={14} className="text-emerald-500" />
+        <TrendingDown size={14} className="text-brand-emerald-600" />
         <span className="text-xs text-slate-500">
           Conso : −{rec.reduction_conso_kwh_m2} kWh/m²/an → <b>{rec.nouvelle_conso_kwh_m2}</b> kWh/m²/an
         </span>

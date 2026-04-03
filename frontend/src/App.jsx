@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Leaf, AlertTriangle, Wallet, Hammer, MessageCircle, CheckCircle2 } from "lucide-react";
+import { Leaf, AlertTriangle, Wallet, Hammer, MessageCircle, CheckCircle2, Sparkles } from "lucide-react";
 import StepForm from "./components/StepForm";
 import Dashboard from "./components/Dashboard";
 import RecommandationCard from "./components/RecommandationCard";
@@ -61,51 +61,62 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_8%_0%,#ecfdf5_0%,#f8fafc_38%,#f7faf9_100%)]">
+    <div className="min-h-screen app-bg">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-gray-100">
+      <header className="sticky top-0 z-40 glass-header">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-eco-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glowBlue">
               <Leaf size={18} className="text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-gray-800 leading-tight">EcoPredict</h1>
-              <p className="text-[10px] text-gray-400 -mt-0.5">Diagnostic & Rénovation Énergétique</p>
+              <h1 className="text-lg font-extrabold text-slate-900 leading-tight tracking-tight">
+                Eco<span className="text-gradient-brand">Predict</span>
+              </h1>
+              <p className="text-[10px] text-slate-500 -mt-0.5">Diagnostic & Rénovation Énergétique</p>
             </div>
           </div>
-          <span className="text-xs text-gray-400 hidden sm:inline">v3 · PPE ING4</span>
+          <span className="text-xs text-slate-500 hidden sm:inline">v3 · PPE ING4</span>
         </div>
       </header>
 
       {/* Main */}
       <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
-        <section className="premium-card p-6 md:p-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div>
-              <p className="section-title mb-2">Simulation guidée</p>
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight max-w-2xl">
-                Estimez votre facture annuelle et vos travaux rentables en quelques minutes
+        <section className="premium-card premium-card-hero p-7 md:p-10 overflow-hidden relative">
+          <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-brand-gradient-soft blur-2xl opacity-60" />
+          <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-brand-gradient-soft blur-2xl opacity-60" />
+
+          <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/60 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-600 shadow-sm">
+                <Sparkles size={14} className="text-brand-emerald-600" />
+                Nouvelle version disponible
+              </div>
+
+              <p className="section-title mt-4">Simulation guidée</p>
+              <h2 className="mt-2 text-4xl md:text-5xl font-extrabold text-slate-950 leading-[1.05] tracking-tight">
+                Prédisez et optimisez votre <span className="text-gradient-brand">consommation énergétique</span>
               </h2>
-              <p className="text-sm text-slate-600 mt-2 max-w-2xl">
-                Nous affichons d'abord les champs essentiels. Les paramètres avancés sont disponibles si vous voulez affiner.
+              <p className="text-sm md:text-base text-slate-600 mt-4">
+                EcoPredict analyse les caractéristiques de votre logement pour estimer votre consommation et vous proposer des conseils personnalisés.
               </p>
             </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 min-w-0 lg:min-w-[420px]">
-              <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-3">
-                <Wallet size={16} className="text-emerald-700 mb-1" />
-                <p className="text-xs text-slate-500">Objectif 1</p>
-                <p className="text-sm font-semibold text-slate-800">Coût annuel clair</p>
+              <div className="rounded-3xl border border-slate-200/60 bg-white/70 p-4 shadow-soft">
+                <Wallet size={16} className="text-brand-blue-700 mb-2" />
+                <p className="text-[11px] text-slate-500 uppercase tracking-wide font-semibold">Objectif</p>
+                <p className="text-sm font-semibold text-slate-900">Coût annuel clair</p>
               </div>
-              <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-3">
-                <Hammer size={16} className="text-emerald-700 mb-1" />
-                <p className="text-xs text-slate-500">Objectif 2</p>
-                <p className="text-sm font-semibold text-slate-800">ROI des travaux</p>
+              <div className="rounded-3xl border border-slate-200/60 bg-white/70 p-4 shadow-soft">
+                <Hammer size={16} className="text-brand-emerald-700 mb-2" />
+                <p className="text-[11px] text-slate-500 uppercase tracking-wide font-semibold">Objectif</p>
+                <p className="text-sm font-semibold text-slate-900">ROI des travaux</p>
               </div>
-              <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-3">
-                <MessageCircle size={16} className="text-emerald-700 mb-1" />
-                <p className="text-xs text-slate-500">Objectif 3</p>
-                <p className="text-sm font-semibold text-slate-800">Conseils actionnables</p>
+              <div className="rounded-3xl border border-slate-200/60 bg-white/70 p-4 shadow-soft">
+                <MessageCircle size={16} className="text-brand-blue-700 mb-2" />
+                <p className="text-[11px] text-slate-500 uppercase tracking-wide font-semibold">Objectif</p>
+                <p className="text-sm font-semibold text-slate-900">Conseils actionnables</p>
               </div>
             </div>
           </div>
@@ -118,7 +129,7 @@ export default function App() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm"
+              className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl text-sm shadow-soft"
             >
               <AlertTriangle size={16} />
               <span className="flex-1">{error}</span>
@@ -132,7 +143,7 @@ export default function App() {
         {/* Form */}
         <section className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">1</span>
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-brand-gradient text-xs font-extrabold text-white shadow-glowBlue">1</span>
             <h2 className="section-title">Saisie du logement</h2>
           </div>
           <StepForm
@@ -155,7 +166,7 @@ export default function App() {
               {/* Dashboard */}
               <section className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-700">2</span>
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-xs font-extrabold text-white">2</span>
                   <h2 className="section-title">Diagnostic</h2>
                   <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] text-emerald-700">
                     <CheckCircle2 size={12} /> Calcul terminé
@@ -168,7 +179,7 @@ export default function App() {
               {result.recommandations?.length > 0 && (
                 <section className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-700">3</span>
+                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-xs font-extrabold text-white">3</span>
                     <h2 className="section-title">Travaux recommandés</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

@@ -94,29 +94,30 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-emerald-100 overflow-hidden">
-      <div className="px-6 pt-6 pb-4 border-b border-emerald-50 bg-gradient-to-r from-emerald-50/80 to-white">
+    <div className="premium-card overflow-hidden shadow-lift border border-slate-200/60">
+      <div className="px-6 pt-6 pb-5 border-b border-slate-200/60 bg-brand-gradient-soft">
         <div className="flex items-center justify-between gap-4 mb-3">
           <div>
-            <p className="text-xs tracking-wider uppercase text-emerald-700 font-semibold">Parcours guidé</p>
-            <p className="text-sm text-gray-600">Complétez l'essentiel d'abord, ajoutez l'avancé si nécessaire.</p>
+            <p className="text-xs tracking-wider uppercase text-slate-800 font-extrabold">Parcours guidé</p>
+            <p className="text-sm text-slate-600">Complétez l'essentiel d'abord, ajoutez l'avancé si nécessaire.</p>
           </div>
           <div className="text-right">
             <p className="text-xs text-gray-500">Progression</p>
-            <p className="text-lg font-bold text-emerald-700">{stepProgress}%</p>
+            <p className="text-lg font-extrabold text-gradient-brand">{stepProgress}%</p>
           </div>
         </div>
-        <div className="h-2 bg-emerald-100 rounded-full overflow-hidden">
+        <div className="h-2 bg-white/70 rounded-full overflow-hidden border border-slate-200/50">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${stepProgress}%` }}
-            className="h-full bg-emerald-500"
+            className="h-full bg-brand-gradient"
           />
         </div>
       </div>
 
       {/* Stepper */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-gray-100">
+      <div className="px-4 sm:px-6 py-4 border-b border-slate-200/60 bg-white/60">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-2xl bg-slate-100/70 p-2 border border-slate-200/60">
         {STEPS.map((s, i) => {
           const StepIcon = ICONS[s.icon];
           const active = i === step;
@@ -125,19 +126,20 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
             <button
               key={s.id}
               onClick={() => setStep(i)}
-              className={`px-3 py-4 text-sm font-medium transition-all border-b-2
-                ${active ? "bg-emerald-50 text-emerald-700 border-emerald-500" : "border-transparent"}
-                ${done ? "text-emerald-700" : ""}
-                ${!active && !done ? "text-gray-400 hover:text-gray-600" : ""}
+              className={`px-3 py-3 rounded-xl text-sm font-semibold transition-all
+                ${active ? "bg-white text-slate-900 shadow-soft border border-slate-200/70" : "border border-transparent"}
+                ${done && !active ? "text-brand-emerald-700" : ""}
+                ${!active && !done ? "text-slate-500 hover:text-slate-800" : ""}
               `}
             >
               <span className="flex items-center justify-center gap-2">
-                <StepIcon size={16} />
+                <StepIcon size={16} className={active ? "text-brand-blue-700" : done ? "text-brand-emerald-700" : "text-slate-400"} />
                 <span>{s.label}</span>
               </span>
             </button>
           );
         })}
+        </div>
       </div>
 
       {/* Fields */}
@@ -152,11 +154,11 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
         >
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-                <Icon size={20} className="text-emerald-600" />
+              <div className="w-10 h-10 rounded-2xl bg-brand-gradient-soft flex items-center justify-center border border-slate-200/60">
+                <Icon size={20} className="text-brand-blue-700" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">
+                <h3 className="font-extrabold text-slate-900 tracking-tight">
                   Étape {step + 1} - {current.label}
                 </h3>
                 <p className="text-xs text-gray-500">{STEP_META[current.id]}</p>
@@ -171,8 +173,7 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
                 <button
                   type="button"
                   onClick={toggleAdvanced}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium
-                             bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 btn-ghost text-xs font-semibold"
                 >
                   {showAdvanced ? <Sparkles size={14} /> : <SlidersHorizontal size={14} />}
                   {showAdvanced ? "Mode simple" : `Afficher ${hiddenCount} champs avancés`}
@@ -183,16 +184,15 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {visibleFields.map((f) => (
-              <div key={f.key} className="rounded-xl border border-gray-100 p-3 bg-white">
-                <label className="block text-xs font-medium text-gray-500 mb-1">
+              <div key={f.key} className="rounded-2xl border border-slate-200/60 p-4 bg-white/70 shadow-soft">
+                <label className="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wide mb-2">
                   {f.label}
                 </label>
                 {f.type === "select" ? (
                   <select
                     value={formData[f.key] ?? ""}
                     onChange={(e) => handleChange(f.key, e.target.value, "select")}
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm
-                               focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition"
+                    className="w-full control px-3 py-2.5 text-sm text-slate-900"
                   >
                     {f.options.map((o) => (
                       <option key={o} value={o}>{o}</option>
@@ -206,12 +206,11 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
                     max={f.max}
                     step={f.step || 1}
                     onChange={(e) => handleChange(f.key, e.target.value, "number")}
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm
-                               focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition"
+                    className="w-full control px-3 py-2.5 text-sm text-slate-900"
                   />
                 )}
                 {f.key === "tarif_energie_eur_kwh" && (
-                  <p className="mt-1 text-[11px] text-gray-400">
+                  <p className="mt-2 text-[11px] text-slate-500">
                     Astuce: ce tarif se met à jour automatiquement selon l'énergie choisie.
                   </p>
                 )}
@@ -222,11 +221,11 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
       </AnimatePresence>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50/70">
+      <div className="flex items-center justify-between px-6 py-5 border-t border-slate-200/60 bg-white/60">
         <button
           onClick={() => setStep((s) => Math.max(0, s - 1))}
           disabled={step === 0}
-          className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-30 transition"
+          className="flex items-center gap-1 text-sm font-semibold text-slate-600 hover:text-slate-900 disabled:opacity-30 transition"
         >
           <ChevronLeft size={16} /> Précédent
         </button>
@@ -234,8 +233,7 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
         {step < STEPS.length - 1 ? (
           <button
             onClick={() => setStep((s) => s + 1)}
-            className="flex items-center gap-1 px-5 py-2 bg-emerald-600 text-white text-sm font-medium
-                       rounded-lg hover:bg-emerald-700 transition shadow-sm"
+            className="flex items-center gap-2 px-6 py-2.5 btn-brand text-sm font-semibold"
           >
             Suivant <ChevronRight size={16} />
           </button>
@@ -243,8 +241,7 @@ export default function StepForm({ formData, setFormData, onSubmit, loading, onF
           <button
             onClick={onSubmit}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-2 bg-emerald-600 text-white text-sm font-medium
-                       rounded-lg hover:bg-emerald-700 transition shadow-sm disabled:opacity-60"
+            className="flex items-center gap-2 px-6 py-2.5 btn-brand text-sm font-semibold disabled:opacity-60"
           >
             {loading ? (
               <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />

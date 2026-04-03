@@ -4,20 +4,22 @@ import DPEGauge from "./DPEGauge";
 
 function StatCard({ icon: Icon, label, value, unit, tone }) {
   const tones = {
-    conso: "from-amber-50 to-amber-100/30 text-amber-900 border-amber-200/70",
-    co2: "from-indigo-50 to-indigo-100/30 text-indigo-900 border-indigo-200/70",
-    cost: "from-emerald-50 to-emerald-100/30 text-emerald-900 border-emerald-200/70",
+    conso: "from-brand-blue-50 to-white text-slate-950 border-brand-blue-200/60",
+    co2: "from-indigo-50 to-white text-slate-950 border-indigo-200/60",
+    cost: "from-brand-emerald-50 to-white text-slate-950 border-brand-emerald-200/60",
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-2xl border p-5 bg-gradient-to-br ${tones[tone]}`}
+      className={`rounded-3xl border p-5 bg-gradient-to-br shadow-soft ${tones[tone]}`}
     >
       <div className="flex items-center gap-2 mb-2">
-        <Icon size={16} className="opacity-70" />
-        <span className="text-[11px] font-semibold uppercase tracking-wide opacity-80">{label}</span>
+        <div className="h-8 w-8 rounded-2xl bg-white/70 border border-slate-200/60 flex items-center justify-center">
+          <Icon size={16} className="text-slate-700" />
+        </div>
+        <span className="text-[11px] font-extrabold uppercase tracking-wide text-slate-600">{label}</span>
       </div>
       <p className="kpi-value">
         {typeof value === "number" ? value.toLocaleString("fr-FR") : value}
@@ -31,10 +33,10 @@ function ComparisonBar({ label, current, improved, unit, color }) {
   const maxVal = Math.max(current, improved, 1);
   return (
     <div className="space-y-1.5">
-      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</p>
+      <p className="text-xs font-extrabold text-slate-600 uppercase tracking-wide">{label}</p>
       <div className="flex items-center gap-3">
         <div className="flex-1">
-          <div className="h-4 bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-4 bg-slate-100/80 rounded-full overflow-hidden border border-slate-200/60">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${(current / maxVal) * 100}%` }}
@@ -46,7 +48,7 @@ function ComparisonBar({ label, current, improved, unit, color }) {
         </div>
         <ArrowRight size={14} className="text-slate-300 shrink-0" />
         <div className="flex-1">
-          <div className="h-4 bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-4 bg-slate-100/80 rounded-full overflow-hidden border border-slate-200/60">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${(improved / maxVal) * 100}%` }}
@@ -112,18 +114,14 @@ export default function Dashboard({ result }) {
 
       {/* DPE / GES Gauges */}
       <div className="premium-card p-6">
-        <h3 className="section-title mb-4">
-          Étiquettes énergie & climat
-        </h3>
+        <h3 className="section-title mb-4">Étiquettes énergie & climat</h3>
         <DPEGauge diagnostic={diagnostic} />
       </div>
 
       {/* Comparison */}
       {recommandations.length > 0 && (
         <div className="premium-card p-6 space-y-4">
-          <h3 className="section-title">
-            Avant / Après travaux
-          </h3>
+          <h3 className="section-title">Avant / Après travaux</h3>
           <ComparisonBar
             label="Consommation énergétique"
             current={diagnostic.consommation_kwh_m2_an}
