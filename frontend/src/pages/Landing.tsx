@@ -268,8 +268,8 @@ export default function Landing() {
                     <Shield className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <div className="text-sm font-bold">DPE Certifié</div>
-                    <div className="text-xs text-muted-foreground">Analysé par IA</div>
+                    <div className="text-sm font-bold">Estimation DPE</div>
+                    <div className="text-xs text-muted-foreground">Simulation IA (non officielle)</div>
                   </div>
                 </motion.div>
               </div>

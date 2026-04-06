@@ -1,12 +1,42 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Lightbulb, Bot, Sparkles } from 'lucide-react';
+import { ArrowLeft, Lightbulb, Bot, Sparkles, MapPin, Phone, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RecommandationCard from '@/components/RecommandationCard';
 import { getHistory, postInterpret } from '@/lib/api';
 import type { PredictResponse } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
+
+type PartnerLead = {
+  name: string;
+  specialty: string;
+  city: string;
+  phone: string;
+  href: string;
+};
+
+function buildPartnerLeads(zone: string): PartnerLead[] {
+  if (zone === 'H1') {
+    return [
+      { name: 'Nord Eco Habitat', specialty: 'Isolation et ventilation', city: 'Lille', phone: '03 20 00 45 10', href: '#' },
+      { name: 'Climat Renov Est', specialty: 'Pompes a chaleur', city: 'Strasbourg', phone: '03 88 11 24 60', href: '#' },
+      { name: 'Atelier Thermique H1', specialty: 'Menuiseries performantes', city: 'Metz', phone: '03 87 15 90 33', href: '#' },
+    ];
+  }
+  if (zone === 'H3') {
+    return [
+      { name: 'Sud Renov Energie', specialty: 'Protection solaire et isolation', city: 'Marseille', phone: '04 91 60 22 18', href: '#' },
+      { name: 'Mediterranee Confort', specialty: 'Chauffe-eau thermodynamique', city: 'Montpellier', phone: '04 67 10 43 55', href: '#' },
+      { name: 'Azur Travaux Habitat', specialty: 'PAC air/air et ventilation', city: 'Nice', phone: '04 93 80 71 24', href: '#' },
+    ];
+  }
+  return [
+    { name: 'Renov Centre Habitat', specialty: 'Renovation globale', city: 'Paris', phone: '01 45 82 17 40', href: '#' },
+    { name: 'Eco Travaux Ouest', specialty: 'Isolation murs et combles', city: 'Nantes', phone: '02 40 73 28 11', href: '#' },
+    { name: 'Partenaire Energie H2', specialty: 'PAC et regulation', city: 'Bordeaux', phone: '05 56 30 94 27', href: '#' },
+  ];
+}
 
 // ── Skeleton Loader ──
 function InterpretSkeleton() {
@@ -145,6 +175,8 @@ export default function Conseils() {
 
   const { result } = state;
   const { recommandations } = result;
+  const zone = String(state.formData?.zone_climatique ?? 'H2');
+  const partnerLeads = buildPartnerLeads(zone);
 
   return (
     <>
@@ -267,6 +299,38 @@ export default function Conseils() {
               )}
             </div>
           </div>
+
+          {/* Partner leads */}
+          {recommandations.length > 0 && (
+            <section className="space-y-4">
+              <div className="rounded-3xl border border-primary/20 bg-primary/5 p-5">
+                <h3 className="text-lg font-bold">Artisans partenaires proches de votre zone</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Mise en relation partenaire proposee apres votre plan de travaux ({zone}).
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {partnerLeads.map((partner) => (
+                  <div key={partner.name} className="rounded-2xl border border-border bg-card p-4 space-y-3">
+                    <div>
+                      <p className="font-semibold text-foreground">{partner.name}</p>
+                      <p className="text-xs text-muted-foreground">{partner.specialty}</p>
+                    </div>
+                    <div className="space-y-1.5 text-sm">
+                      <p className="flex items-center gap-2 text-muted-foreground"><MapPin size={14} /> {partner.city}</p>
+                      <p className="flex items-center gap-2 text-muted-foreground"><Phone size={14} /> {partner.phone}</p>
+                    </div>
+                    <Button variant="outline" size="sm" className="w-full gap-2" asChild>
+                      <a href={partner.href}>
+                        Voir le partenaire <ExternalLink size={14} />
+                      </a>
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </motion.div>
       </div>
     </>

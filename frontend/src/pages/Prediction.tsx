@@ -181,7 +181,7 @@ export default function Prediction() {
 
     const shareData = {
       title: 'Mon Diagnostic EcoPredict',
-      text: `J'ai obtenu un score DPE de ${state?.result.diagnostic.classe_dpe} avec EcoPredict ! Découvrez mes conseils rénovation.`,
+      text: `J'ai obtenu une estimation DPE ${state?.result.diagnostic.classe_dpe} (non officielle) avec EcoPredict. Découvrez mes conseils rénovation.`,
       url: window.location.origin
     };
 
@@ -285,7 +285,7 @@ export default function Prediction() {
                 <FileText className="h-5 w-5" />
               </div>
               <p className="text-[15px] text-foreground leading-relaxed font-medium">
-                Consommation actuelle de <strong>{diagnostic.consommation_kwh_m2_an} kWh/m²/an</strong> (classe <strong>{diagnostic.classe_dpe}</strong>) pour un coût annuel estimé à <strong>{diagnostic.cout_annuel_euros.toLocaleString("fr-FR")} EUR</strong>.
+                Consommation actuelle de <strong>{diagnostic.consommation_kwh_m2_an} kWh/m²/an</strong> (classe DPE <strong>{diagnostic.classe_dpe}</strong> <em>(non officielle)</em>) pour un coût annuel estimé à <strong>{diagnostic.cout_annuel_euros.toLocaleString("fr-FR")} EUR</strong>.
                 {recommandations.length > 0 && (
                     <span className="block mt-2 text-emerald-600 dark:text-emerald-400 font-bold">
                         Votre potentiel d'économie est de {Math.round(diagnostic.cout_annuel_euros - bestCost).toLocaleString("fr-FR")} € par an.
