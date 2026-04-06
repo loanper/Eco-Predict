@@ -1,0 +1,227 @@
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 152 76% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 30% 94%;
+    --muted-foreground: 215 20% 45%;
+
+    --accent: 168 80% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* EcoPredict custom tokens */
+    --eco-green: 152 76% 40%;
+    --eco-green-light: 152 70% 95%;
+    --eco-blue: 217 91% 60%;
+    --eco-blue-light: 217 90% 96%;
+    --eco-teal: 168 80% 42%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(168 80% 42%) 50%, hsl(152 76% 40%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(152 76% 40%) 0%, hsl(168 80% 42%) 100%);
+
+    --shadow-soft: 0 4px 20px -4px hsl(217 91% 60% / 0.15);
+    --shadow-card: 0 4px 30px -8px hsl(215 25% 15% / 0.08);
+    --shadow-glow: 0 0 40px hsl(152 76% 40% / 0.2);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 25% 10%;
+    --foreground: 210 40% 98%;
+
+    --card: 215 25% 13%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 215 25% 13%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 65%;
+    --primary-foreground: 215 25% 10%;
+
+    --secondary: 152 70% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 215 25% 18%;
+    --muted-foreground: 210 20% 65%;
+
+    --accent: 168 75% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 25% 20%;
+    --input: 215 25% 20%;
+    --ring: 217 91% 65%;
+
+    --eco-green: 152 70% 45%;
+    --eco-green-light: 152 70% 15%;
+    --eco-blue: 217 91% 65%;
+    --eco-blue-light: 217 90% 15%;
+    --eco-teal: 168 75% 45%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 55%) 0%, hsl(168 75% 40%) 50%, hsl(152 70% 40%) 100%);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .text-gradient {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer components {
+  .eco-card {
+    @apply bg-card rounded-xl border border-border shadow-card transition-all duration-300;
+  }
+
+  .eco-card:hover {
+    @apply shadow-soft -translate-y-0.5;
+  }
+
+  .eco-badge-success {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    background: hsl(var(--eco-green-light));
+    color: hsl(var(--eco-green));
+  }
+
+  .eco-badge-warning {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    background: hsl(45 100% 94%);
+    color: hsl(45 100% 35%);
+  }
+
+  .eco-badge-danger {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    background: hsl(0 84% 95%);
+    color: hsl(0 84% 50%);
+  }
+}
+
+/* ─── Print Styles ─── */
+@media print {
+  body {
+    background: white !important;
+    color: #1a1a1a !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Hide everything by default when printing */
+  #root > div:not(.print-container), 
+  aside, 
+  nav, 
+  header, 
+  button, 
+  .no-print {
+    display: none !important;
+  }
+
+  /* Only show the print-only component */
+  .print-only {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Ensure background colors and images are printed */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}
